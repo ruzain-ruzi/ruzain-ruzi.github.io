@@ -2,236 +2,496 @@
 <html lang="en">
 
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Ruzain Abdurahman</title>
-        <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <link rel="stylesheet" href="css/style.css">
-        <script src="https://kit.fontawesome.com/b16517885d.js" crossorigin="anonymous"></script>
-        <script src="js/jquery-3.6.0.min.js"></script>
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="css/owl.carousel.min.css" />
-        <script src="js/typed.min.js"></script>
-        <script src="js/jquery.waypoints.min.js"></script>
-        <script src="js/owl.carousel.min.js"></script>
+        <title>Ruzain | Android Developer</title>
+        <meta name="description"
+            content="Android Developer with 3+ years of experience in Kotlin, MVVM, Clean Architecture, Android TV, Firebase and Flutter." />
+
+        <link rel="icon" type="image/png" href="images/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+        <link rel="shortcut icon" href="images/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+        <link rel="manifest" href="images/site.webmanifest" />
+
+        <!-- SEO / OpenGraph -->
+        <meta property="og:title" content="Ruzain | Android Developer" />
+        <meta property="og:description"
+            content="Android Developer portfolio – Kotlin, MVVM, Clean Architecture, Android TV, Flutter." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://ruzain.online" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet" />
+
+        <style>
+            :root {
+                --bg: #0b0d15;
+                --card: #141726;
+                --primary: #6cf2c2;
+                --secondary: #7c83ff;
+                --text: #e6e6eb;
+                --muted: #9aa0b4;
+                --nav-bg: rgba(15, 16, 30, .78);
+                --radius: 16px;
+                --max: 1100px;
+            }
+
+            body.light {
+                --bg: #f4f6fb;
+                --card: #ffffff;
+                --text: #0e1320;
+                --muted: #5c647a;
+                --primary: #3fd1a6;
+                --secondary: #5b61ff;
+                --nav-bg: rgba(255, 255, 255, .92);
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box
+            }
+
+            body {
+                font-family: Inter, system-ui, sans-serif;
+                background: var(--bg);
+                color: var(--text);
+                line-height: 1.7;
+                overflow-x: hidden;
+                -webkit-font-smoothing: antialiased;
+                text-rendering: optimizeLegibility;
+                transition: background-color 0.4s ease, color 0.3s ease;
+            }
+
+            a {
+                text-decoration: none;
+                color: inherit
+            }
+
+            /* ===== Navbar (pixel-perfect) ===== */
+            header {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 1000;
+                background: var(--nav-bg);
+                backdrop-filter: blur(14px);
+                transition: background-color 0.4s ease;
+            }
+
+            nav {
+                max-width: var(--max);
+                margin: 0 auto;
+                padding: 0.9rem 1rem;
+                display: grid;
+                grid-template-columns: auto 1fr auto;
+                align-items: center;
+            }
+
+            /* Logo text */
+            .logo-text {
+                font-weight: 700;
+                font-size: 1.05rem;
+                letter-spacing: 0.02em;
+                background: linear-gradient(90deg, var(--primary), var(--secondary));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .logo-text .dot {
+                -webkit-text-fill-color: var(--primary);
+            }
+
+            nav ul {
+                list-style: none;
+                display: flex;
+                justify-content: center;
+                gap: 1.6rem;
+            }
+
+            nav ul li a {
+                font-size: 0.95rem;
+                color: var(--muted);
+                transition: color .2s ease;
+            }
+
+            nav ul li a:hover {
+                color: var(--text)
+            }
+
+            .menu {
+                display: none;
+                font-size: 1.6rem;
+                cursor: pointer
+            }
+
+            .socials {
+                display: flex;
+                align-items: center;
+                gap: 0.9rem;
+            }
+
+            .socials a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 32px;
+                width: 32px;
+            }
+
+            .socials img {
+                width: 22px;
+                height: 22px;
+                display: block;
+            }
+
+            .socials img {
+                width: 22px;
+                height: 22px;
+                display: block
+            }
+
+            .github-icon {
+                width: 22px;
+                height: 22px;
+                display: block;
+                filter: invert(1);
+                transition: filter 0.3s ease;
+            }
+
+            body.light .github-icon {
+                filter: invert(0);
+            }
+
+            /* ===== Layout & Typography ===== */
+            section {
+                max-width: var(--max);
+                margin: 0 auto;
+                padding: 6.5rem 1rem;
+            }
+
+            .hero {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                gap: 0.8rem;
+            }
+
+            h1 {
+                font-size: clamp(2.4rem, 5vw, 3rem);
+                font-weight: 700;
+                letter-spacing: -0.02em;
+            }
+
+            h2 {
+                text-align: center;
+                font-size: 1.9rem;
+                font-weight: 600;
+                margin-bottom: 2.2rem;
+                letter-spacing: -0.01em;
+            }
+
+            p {
+                font-size: 0.98rem
+            }
+
+            .gradient {
+                background: linear-gradient(90deg, var(--primary), var(--secondary));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .typing {
+                color: var(--primary);
+                font-weight: 600
+            }
+
+            .btn {
+                margin-top: 2rem;
+                padding: 0.75rem 1.8rem;
+                border-radius: 30px;
+                background: linear-gradient(90deg, var(--primary), var(--secondary));
+                color: #000;
+                font-weight: 600;
+                font-size: 0.95rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.4rem;
+                border: 2px solid transparent;
+                background-origin: border-box;
+                background-clip: padding-box, border-box;
+                transition: background 0.35s ease, color 0.25s ease, transform 0.25s ease;
+            }
+
+            .btn:hover {
+                background:
+                    linear-gradient(var(--bg), var(--bg)) padding-box,
+                    linear-gradient(90deg, var(--primary), var(--secondary)) border-box;
+                color: var(--text);
+                transform: translateY(-2px);
+            }
+
+            .btn:active {
+                transform: translateY(0);
+            }
+
+            /* LinkedIn button – CONTACT SECTION ONLY */
+            .linkedin-btn {
+                background: #0a66c2;
+                color: #ffffff;
+            }
+
+            .linkedin-btn:hover {
+                background:
+                    linear-gradient(var(--bg), var(--bg)) padding-box,
+                    linear-gradient(90deg, #0a66c2, #0a66c2) border-box;
+                color: #0a66c2;
+            }
+
+            .linkedin-btn:hover {
+                background:
+                    linear-gradient(var(--bg), var(--bg)) padding-box,
+                    linear-gradient(90deg, #0a66c2, #0a66c2) border-box;
+                color: #0a66c2;
+            }
+
+            /* ===== Grids & cards ===== */
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                gap: 2rem;
+            }
+
+            .card {
+                background: var(--card);
+                border-radius: var(--radius);
+                padding: 1.6rem;
+                font-size: 0.95rem;
+                line-height: 1.6;
+                transition: background-color 0.4s ease, color 0.3s ease;
+            }
+
+            /* ===== Skills ===== */
+            .skill-logos {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 2rem;
+                margin-bottom: 3rem;
+            }
+
+            .skill-logos img {
+                width: 44px;
+                height: 44px
+            }
+
+            /* ===== Footer ===== */
+            footer {
+                text-align: center;
+                padding: 2.5rem 1rem;
+                font-size: 0.85rem;
+                color: var(--muted);
+            }
+
+            /* ===== Mobile ===== */
+            @media(max-width:768px) {
+                nav ul {
+                    display: none;
+                    position: absolute;
+                    top: 64px;
+                    right: 16px;
+                    flex-direction: column;
+                    background: var(--card);
+                    padding: 1rem 1.2rem;
+                    border-radius: 14px;
+                }
+
+                nav ul.show {
+                    display: flex
+                }
+
+                .menu {
+                    display: block
+                }
+            }
+        </style>
     </head>
 
     <body>
-        <div class="scroll-up-btn">
-            <i class="fa fa-angle-up"></i>
-        </div>
-        <nav class="navbar">
-            <div class="max-width">
-                <div class="logo"><a href="#">Portfo<span>lio.</span></a></div>
-                <ul class="menu">
-                    <li><a href="#home" class="menu-btn">Home</a></li>
-                    <li><a href="#about" class="menu-btn">About</a></li>
-                    <li><a href="#services" class="menu-btn">Services</a></li>
-                    <li><a href="#skills" class="menu-btn">Skills</a></li>
-                    <li><a href="#contact" class="menu-btn">Contact</a></li>
-            </div>
-            </ul>
-        </nav>
 
-        <!---Home Section-->
-        <section class="home" id="home">
-            <div class="max-width">
-                <div class="home-content" background="/images/banner.jpg">
-                    <div class="text-1">Hello, this is</div>
-                    <div class="text-2">Ruzain Abdurahman</div>
-                    <div class="text-3">And I'm a <span class="typing"></span></div>
-                    <a href="mailto:ruzain.abdurahman@gmail.com">Hire Me</a>
+        <header>
+            <nav>
+                <span class="logo-text">Portfolio<span class="dot">.</span></span>
+                <div class="menu" onclick="toggleMenu()">☰</div>
+                <ul id="nav">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#certs">Certifications</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="socials">
+                    <a href="https://github.com/ruzain-ruzi" target="_blank">
+                        <img class="github-icon"
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                            alt="GitHub" />
+                    </a>
+                    <a href="https://www.linkedin.com/in/ruzain-abdurahman" target="_blank">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg"
+                            alt="LinkedIn" />
+                    </a>
+                    <span onclick="toggleTheme()" style="cursor:pointer">🌗</span>
                 </div>
-            </div>
-        </section>
-        <!--About section coding-->
-        <section class="about" id="about">
-            <div class="max-width">
-                <h2 class="title">About Me</h2>
-                <div class="about-content">
-                    <div class="column left">
-                        <img src="images/MyPhoto.jpg">
-                    </div>
-                    <div class="column right">
-                        <div class="text">I'm Ruzain and I'm a <span class="typing-2"></span></div>
-                        <p>Hey there! This is Ruzain Abdurahman currently a fresher. I have good experience in various
-                            programming paradigms like C, Java, Python, DSA, ML, Web Development, and many more. I've
-                            good hands on Machine Learning, Data Science & Deep Learning and have a keen interest in the
-                            coming AI World.</p>
-                        <a href="http://shorturl.at/fiFT2" target="_blank">Download CV</a>
-                    </div>
-                </div>
-            </div>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>Hi, I’m <span class="gradient">Ruzain Abdurahman</span></h1>
+            <p>I build <span class="typing"></span></p>
+            <a href="Ruzain_Android_Developer_Resume.pdf" class="btn">Download Resume</a>
         </section>
 
-        <!--Services Section Code-->
-        <section class="services" id="services">
-            <div class="max-width">
-                <h2 class="title">My Services</h2>
-                <div class="serv-content">
-                    <div class="card">
-                        <div class="box">
-                            <i class="fa fa-paint-brush"></i>
-                            <div class="text">Data Scientist</div>
-                            <p>Dedicated and competent AI Programmer in designing and developing applications. Possess
-                                first-hand experience in writing codes and building neural networks. Aiming to emerge as
-                                a Machine Learning/Deep Learning Programmer to build and manage associated projects.</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="box">
-                            <i class="fa fa-send"></i>
-                            <div class="text">Web Developer</div>
-                            <p>Self-motivated team player seeking a position as a lead web developer with Next
-                                Generation Web Development where I can apply my advanced knowledge of web design with my
-                                leadership abilities to meet client needs and exceed their expectations</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="box">
-                            <i class="fa fa-mortar-board"></i>
-                            <div class="text">Software Developer</div>
-                            <p>A motivated individual with in-depth knowledge of languages and development tools,
-                                seeking a position in a growth-oriented company where I can use my skills to the
-                                advantage of the company while having the scope to develop my own skills & use this to
-                                teach others as well. </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <section id="about">
+            <h2>About</h2>
+            <p style="max-width:760px;margin:auto;text-align:center;color:var(--muted)">
+                Android Developer with 3+ years of professional experience building scalable mobile applications using
+                Kotlin, MVVM, and Clean Architecture. Experienced in Android TV, Firebase, REST APIs, and offline‑first
+                systems.
+            </p>
         </section>
-        <!--Skills section-->
 
-        <section class="skills" id="skills">
-            <div class="max-width">
-                <h2 class="title">My skills</h2>
-                <div class="skills-content">
-                    <div class="column left">
-                        <div class="text">My creative skills & experiences.</div>
-                        <p>AI Programmer in designing and developing ML/DL applications. Possess first-hand experience
-                            in writing codes and building neural networks. Aiming to emerge as a Machine Learning/Deep
-                            Learning Programmer to build and manage associated projects. A dedicated and result-oriented
-                            programmer possessing a passion for programming and seeking a software engineering position
-                            to make the most of my coding skills to make coding easy for upcoming generation.</p>
-                        <a href="#">Read more</a>
-                    </div>
-                    <div class="column right">
-                        <div class="bars">
-                            <div class="info">
-                                <span>HTML</span>
-                                <span>90%</span>
-                            </div>
-                            <div class="line html"></div>
-                        </div>
-                        <div class="bars">
-                            <div class="info">
-                                <span>CSS</span>
-                                <span>60%</span>
-                            </div>
-                            <div class="line css"></div>
-                        </div>
-                        <div class="bars">
-                            <div class="info">
-                                <span>JS</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="line js"></div>
-                        </div>
-                        <div class="bars">
-                            <div class="info">
-                                <span>Python</span>
-                                <span>99%</span>
-                            </div>
-                            <div class="line python"></div>
-                        </div>
-                        <div class="bars">
-                            <div class="info">
-                                <span>Java</span>
-                                <span>95%</span>
-                            </div>
-                            <div class="line java"></div>
-                        </div>
-                    </div>
-                </div>
+        <section id="skills">
+            <h2>Skills</h2>
+            <div class="skill-logos">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" />
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" />
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" />
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" />
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" />
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" />
+            </div>
+            <div class="grid">
+                <div class="card">Native Android development with Kotlin & Jetpack</div>
+                <div class="card">MVVM & Clean Architecture for maintainable code</div>
+                <div class="card">Firebase, REST APIs, Room & offline-first apps</div>
+                <div class="card">Flutter (IBM Certified) & Git-based workflows</div>
             </div>
         </section>
 
-        <!-- contact section start -->
-        <section class="contact" id="contact">
-            <div class="max-width">
-                <h2 class="title">Contact me</h2>
-                <div class="contact-content">
-                    <div class="column left">
-                        <div class="text">Get in Touch</div>
-                        <p>For hiring me in your company or organization contact me here.</p>
-                        <div class="icons">
-                            <div class="row">
-                                <i class="fa fa-user" style="width: 1.5rem;"></i>
-                                <div class="info">
-                                    <div class="head">Name</div>
-                                    <div class="sub-title">Ruzain Abdurahman</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <i class="fa fa-map-marker" style="width: 1.5rem;"></i>
-                                <div class="info">
-                                    <div class="head">Address</div>
-                                    <div class="sub-title">Kannur, Kerala</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <i class="fa fa-envelope"></i>
-                                <div class="info">
-                                    <div class="head">Email</div>
-                                    <div class="sub-title">ruzain.abdurahman@gmail.com</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column right">
-                        <div class="text">Message me</div>
-                        <form action="https://formspree.io/f/mvolnone" method="post" id="my-form">
-                            <div class="fields">
-                                <div class="field name">
-                                    <input type="text" name="Name" placeholder="Name" required>
-                                </div>
-                                <div class="field email">
-                                    <input type="email" name="Email" placeholder="Email" required>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <input type="text" name="Subject" placeholder="Subject" required>
-                            </div>
-                            <div class="field textarea">
-                                <textarea name="message" cols="30" rows="10" placeholder="Message.."
-                                    required></textarea>
-                            </div>
-                            <div class="button-area">
-                                <button type="submit">Send message</button>
-                            </div>
-                            <br>
-                            <iframe src="https://github.com/sponsors/ruzain-ruzi/button" title="Sponsor ruzain-ruzi"
-                                height="35" width="116" style="border: 0;"></iframe>
-                        </form>
-                        <br>
-                        <div id="status"></div>
+        <section id="projects">
+            <h2>Projects</h2>
+            <div class="grid">
+
+                <div class="card">
+                    <strong>OneDi Bus Ticketing App</strong>
+                    <p>
+                        Native Android application for public transport ticketing with NFC-based payments. Contributed
+                        to core feature development and performance improvements, resulting in approximately <strong>40%
+                            revenue increase</strong>.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <strong>Chandini Automobiles DSR App</strong>
+                    <p>
+                        Sales and daily collection reporting application for an oil distribution company. Designed for
+                        offline usage with automated report generation to improve operational efficiency.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <strong>OneDi Passenger App</strong>
+                    <p>
+                        Passenger-facing ride booking and real-time tracking application for buses and autos. Improved
+                        usability and performance, leading to a <strong>30% increase in app downloads</strong>.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <strong>OneDi Pilot App</strong>
+                    <p>
+                        Operator-focused Android application for managing daily trips, analytics, and operational
+                        reporting for transport services.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <strong>OneDi Media</strong>
+                    <p>
+                        Android TV–based digital advertising platform for transit vehicles. Optimized UI and playback
+                        reliability for large-screen displays.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="certs">
+            <h2>Certifications</h2>
+
+            <div class="grid">
+                <div class="card" style="display:flex;gap:1.4rem;align-items:center">
+                    <!-- IBM Logo -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM Logo"
+                        style="width:56px;height:auto;flex-shrink:0">
+
+                    <!-- Certification Content -->
+                    <div>
+                        <strong>Flutter and Dart: Developing iOS, Android, and Mobile Apps</strong>
+                        <p style="margin:0.4rem 0 0.6rem;color:var(--muted)">
+                            Issued by <strong>IBM</strong> · November 2025
+                        </p>
+                        <p style="font-size:0.95rem;line-height:1.6">
+                            Professional certification covering Flutter and Dart fundamentals, cross-platform mobile
+                            application development, UI design, state management, and deployment for Android and iOS
+                            platforms.
+                        </p>
+                        <p style="margin-top:0.6rem;font-size:0.9rem;color:var(--muted)">
+                            Credential ID: <strong>58ZBK02VGRJW</strong>
+                        </p>
+                        <a href="https://www.coursera.org/account/accomplishments/records/58ZBK02VGRJW" target="_blank"
+                            style="display:inline-block;margin-top:0.8rem;font-size:0.9rem;color:var(--primary)">
+                            Show credential →
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- footer section start -->
-        <footer>
-            <span>Created By <a href="https://www.linkedin.com/in/ruzain-abdurahman" target="_blank">Ruzain</a> | <span
-                    class="fa fa-copyright"></span> 2022 All rights reserved.</span>
-        </footer>
+        <section id="contact">
+            <h2>Contact</h2>
+            <p style="max-width:620px;margin:0 auto 2.2rem;text-align:center;color:var(--muted)">
+                I’m open to full-time roles, freelance projects, and collaborative opportunities.
+                If you’re building something meaningful and need a reliable Android developer, let’s talk.
+            </p>
 
+            <div style="display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap">
+                <a href="mailto:ruzain.abdurahman@gmail.com" class="btn">Email Me</a>
+                <a href="https://www.linkedin.com/in/ruzain-abdurahman" target="_blank"
+                    class="btn linkedin-btn">LinkedIn</a>
+            </div>
+        </section>
 
-        <script src="js/script.js"></script>
+        <footer>© 2026 Ruzain</footer>
 
+        <script>
+            function toggleTheme() { document.body.classList.toggle('light') }
+            function toggleMenu() { document.getElementById('nav').classList.toggle('show') }
+
+            const words = ['Android Apps', 'Kotlin Systems', 'Clean Architecture', 'Flutter UI'];
+            let i = 0, j = 0; const el = document.querySelector('.typing');
+            function type() { if (j < words[i].length) { el.textContent += words[i][j++]; setTimeout(type, 80) } else setTimeout(erase, 1500) }
+            function erase() { if (j > 0) { el.textContent = words[i].substring(0, --j); setTimeout(erase, 50) } else { i = (i + 1) % words.length; setTimeout(type, 500) } }
+            type();
+        </script>
     </body>
 
 </html>
