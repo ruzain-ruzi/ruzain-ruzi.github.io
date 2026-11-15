@@ -118,6 +118,7 @@ export function mountCore(host: HTMLElement, reducedMotion: MediaQueryList): voi
   }
   function reset(): void { pointerX = 0; pointerY = 0; requestRender(); }
   function changeMotion(): void { if (reducedMotion.matches) dispose(); }
+  const scrollContainer = host.closest('.device-viewport');
   function contextLost(event: Event): void { event.preventDefault(); dispose(); }
   const visibility = new IntersectionObserver(entries => { visible = entries[0]?.isIntersecting ?? false; requestRender(); });
   const sizeObserver = new ResizeObserver(resize);
@@ -129,6 +130,8 @@ export function mountCore(host: HTMLElement, reducedMotion: MediaQueryList): voi
     sizeObserver.disconnect(); visibility.disconnect();
     host.removeEventListener('pointermove', move); host.removeEventListener('pointerleave', reset);
     window.removeEventListener('scroll', requestRender); window.removeEventListener('pagehide', dispose);
+    scrollContainer?.removeEventListener('scroll', requestRender);
+    host.removeEventListener('portfolio-static-core', dispose);
     document.removeEventListener('visibilitychange', requestRender); reducedMotion.removeEventListener('change', changeMotion);
     resetButton?.removeEventListener('click', reset);
     renderer.domElement.removeEventListener('webglcontextlost', contextLost);
@@ -147,6 +150,8 @@ export function mountCore(host: HTMLElement, reducedMotion: MediaQueryList): voi
     visibility.observe(host); sizeObserver.observe(container);
     host.addEventListener('pointermove', move); host.addEventListener('pointerleave', reset);
     window.addEventListener('scroll', requestRender, { passive: true });
+    scrollContainer?.addEventListener('scroll', requestRender, { passive: true });
+    host.addEventListener('portfolio-static-core', dispose);
     document.addEventListener('visibilitychange', requestRender);
     reducedMotion.addEventListener('change', changeMotion); window.addEventListener('pagehide', dispose, { once: true });
     resetButton?.addEventListener('click', reset); renderer.domElement.addEventListener('webglcontextlost', contextLost);

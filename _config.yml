@@ -9,3 +9,5 @@ exclude:
   - tsconfig.json
   - eslint.config.mjs
   - README.md
+  - tests
+  - playwright.config.mjs
