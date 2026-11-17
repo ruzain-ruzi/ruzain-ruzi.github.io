@@ -52,31 +52,31 @@ test('mobile navigation, natural scrolling, touch and accessible menus',async({b
   const context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
   const page=await context.newPage();await visit(page,'http://127.0.0.1:4173/');
   await expect(page.locator('.navigation-rail')).toBeHidden();
-  await expect(page.locator('.bottom-navigation')).toBeVisible();
+  await expect(page.locator('.os-navigation')).toBeVisible();
   await page.locator('#open-more').tap();
   await expect(page.locator('#more-dialog')).toBeVisible();
   await page.keyboard.press('Escape');await expect(page.locator('#more-dialog')).not.toBeVisible();
   await expect(page.locator('#open-more')).toBeFocused();
-  await page.locator('#open-more').tap();await page.locator('#more-dialog a[href="/#experience"]').tap();
+  await page.locator('#open-more').tap();await page.locator('#more-dialog a[href="/#experience"]:visible').tap();
   await expect(current(page)).toHaveAttribute('id','experience');
   await expect(page.locator('#more-dialog')).not.toBeVisible();
   await expect(page.locator('#heading-experience')).toBeFocused();
   await page.evaluate(()=>window.scrollTo(0,500));
   expect(await page.evaluate(()=>scrollY)).toBeGreaterThan(0);
   expect(await page.locator('.device-viewport').evaluate(el=>el.scrollTop)).toBe(0);
-  await page.locator('.bottom-navigation a[href="/#resumes"]').tap();
+  await page.locator('#open-more').tap();await page.locator('#more-dialog a[href="/#resumes"]:visible').tap();
   await expect(current(page)).toHaveAttribute('id','resumes');
   await context.close();
 });
 test('display preferences, form factors and reduced motion',async({page})=>{
   await visit(page);
   await page.selectOption('#form-factor','phone');
-  await expect(page.locator('.bottom-navigation')).toBeVisible();
+  await expect(page.locator('.os-navigation')).toBeVisible();
   await expect(page.locator('.navigation-rail')).toBeHidden();
   await expect.poll(()=>page.locator('.device-frame').evaluate(el=>el.getBoundingClientRect().width)).toBeLessThan(450);
-  await page.selectOption('#form-factor','tablet');await expect(page.locator('.navigation-rail')).toBeVisible();
+  await page.selectOption('#form-factor','tablet');await expect(page.locator('.launcher-grid').first()).toBeVisible();
   await page.selectOption('#form-factor','adaptive');
-  await page.locator('#open-settings').click();
+  await go(page,'/#settings');
   await page.getByRole('radio',{name:'Light',exact:true}).check();
   await expect(page.locator('html')).toHaveAttribute('data-theme','light');
   await page.locator('#reduce-motion').check();
@@ -87,7 +87,7 @@ test('display preferences, form factors and reduced motion',async({page})=>{
   await go(page,'/#architecture');await expect(page.locator('.core-fallback')).toBeVisible();
   await expect(page.locator('.core-canvas canvas')).toHaveCount(0);
   await page.emulateMedia({reducedMotion:'reduce'});
-  await page.locator('#open-settings').click();await expect(page.locator('#reduce-motion')).toBeDisabled();
+  await go(page,'/#settings');await expect(page.locator('#reduce-motion')).toBeDisabled();
 });
 test('all regional downloads preserve original bytes',async({page,request})=>{
   await visit(page,'/#resumes');
@@ -149,7 +149,7 @@ for(const width of [320,390,768,1024,1440,2560]) {
   test(`responsive content remains in bounds at ${width}px`,async({page})=>{
     await page.setViewportSize({width,height:width<700?844:1000});
     await visit(page);
-    for(const route of ['home','expertise','work','experience','resumes','contact','recruiter','architecture']){
+    for(const route of ['home','expertise','work','experience','resumes','contact','recruiter','architecture','settings']){
       await page.goto('/#'+route);
       await expect(current(page)).toHaveAttribute('id',route);
       expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${route}: document overflow`).toBe(true);
@@ -173,10 +173,10 @@ test('axe audits each screen, project detail, settings, and light mode',async({p
   await go(page,'/#work');await page.locator('#work .project-tile h3 a').first().click();
   const detail=await page.evaluate(async()=> (await window.axe.run()).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})));
   results.push({route:'project-detail',violations:detail});
-  await page.locator('#open-settings').click();await page.getByRole('radio',{name:'Light',exact:true}).check();
+  await go(page,'/#settings');await page.getByRole('radio',{name:'Dark',exact:true}).check();
   const settings=await page.evaluate(async()=> (await window.axe.run()).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})));
   results.push({route:'light-settings',violations:settings});
-  await page.keyboard.press('Escape');
+  await page.locator('#open-settings').click();
   const light=await page.evaluate(async()=> (await window.axe.run()).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})));
   results.push({route:'light-detail',violations:light});
   await test.info().attach('accessibility-results',{body:JSON.stringify(results,null,2),contentType:'application/json'});

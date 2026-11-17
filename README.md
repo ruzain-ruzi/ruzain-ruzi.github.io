@@ -1,10 +1,10 @@
-# Ruzain Abdurahman — Portfolio OS
+# Ruzain OS 3.0
 
-An Android-inspired portfolio with a landscape desktop device, adaptive tablet layout, and full-width mobile interface. It is a real HTML application, not an emulator or a canvas-rendered website.
+Ruzain Abdurahman’s Android-inspired portfolio launcher: colorful applications, widgets, six original wallpapers, personalization, recent apps, local search, quick settings, and real engineering case studies. Desktop uses a landscape device; mobile fills the available viewport. Recruiter view stays one click away.
 
-## Run and validate
+## Run
 
-Use **Node 22.19+ (Node 24 recommended)** and a current npm. The system Node 18.12 is too old; this work used the bundled Node 24.22.1 runtime.
+Use **Node 22.19+ (Node 24 recommended)** and npm. The system Node 18 is too old.
 
 ```sh
 npm ci
@@ -13,56 +13,47 @@ npm run test:browser
 npm run preview
 ```
 
-Open `http://127.0.0.1:4173`. The preview server binds only to loopback. Rebuild after editing TypeScript, templates, content, or CSS. Generated files are committed so GitHub Pages does not need a Node build.
+Open `http://127.0.0.1:4173`. Preview binds only to loopback. Rebuild after editing source. Generated HTML/CSS/JS are committed with the source so GitHub Pages does not need a Node build.
 
-Browser tests use the installed Google Chrome channel with Playwright. On another machine, install Chrome or change `channel` in `playwright.config.mjs` to an installed Playwright browser. Tests start the local server if one is not already running. Reports, traces, screenshots, and local audit artifacts live in ignored `.qa/`.
+Tests use installed Google Chrome with Playwright. Optional cross-engine checks:
 
-## Application architecture
+```sh
+npx playwright install firefox webkit
+```
 
-- `src/content.mjs`: unchanged factual source model for profile, projects, expertise, and three resume regions.
-- `src/data/skills.mjs`: verified capability categories and evidence-backed project associations.
-- `scripts/components/device.mjs`: device frame, adaptive navigation, status bar, settings, and More dialog.
-- `scripts/components/screens.mjs`: home, about, expertise, experience, project library/details, architecture, resumes, contact, and recruiter screens.
-- `scripts/components/ui.mjs`: reusable semantic controls, icons, screen headings, and tag lists.
-- `scripts/components/project-art.mjs`: preserved conceptual project illustrations. These are never presented as production screenshots.
-- `src/main.ts`: application orchestration, URL navigation, history entries, focus, metadata, and scroll restoration.
-- `src/navigation.ts`: allowlisted route resolution and legacy-anchor aliases.
-- `src/features/explorers.ts`: skills, project filters, and selectable architecture responsibilities.
-- `src/device/settings.ts`: theme, reduced-motion preferences, native accessible dialogs, clock, and form-factor controls.
-- `src/device/core-loader.ts`, `src/core.ts`: optional lazy Three.js engineering core inside Architecture. The device itself requires no WebGL.
-- `src/styles/device.css`: theme tokens, device frame, adaptive component layouts, reduced-motion and print rules.
-- `src/styles/illustrations.css`: preserved project artwork styles.
-- `scripts/build.mjs`: static HTML generation, CSS minification, split TypeScript compilation, metadata, and sitemap.
-- `tests/portfolio.spec.mjs`: browser-level functional, responsive, accessibility, fallback, and download tests.
+Set `PORTFOLIO_BROWSER=firefox` or `PORTFOLIO_BROWSER=webkit` in your shell, then run `npx playwright test tests/os.spec.mjs`. WebKit automation is not physical Safari/iOS testing. Unset the variable to return to Chrome. Reports, traces, screenshots and local Lighthouse results live in ignored `.qa/`.
 
-Stack: semantic static HTML, CSS container queries, strict TypeScript 6.0.3, esbuild 0.28.2, and optional Three.js 0.187.0. The existing static deployment and content model were retained instead of introducing React hydration or a framework/server migration. TypeScript 6 is compatible with the current ESLint peer range. A scoped minimatch override addresses a tooling advisory.
+## Explore
 
-## Navigation and progressive enhancement
+- Click a launcher app or dock icon. Home returns to its launcher icon; Back uses portfolio/browser history.
+- The bottom handle supports upward drag: Home from an app, All apps from the launcher. Buttons provide keyboard and mouse alternatives. Vertical content scrolling remains native.
+- All apps or `/` opens local search. Arrow keys navigate results; Enter opens; Escape closes overlays or goes back from an app.
+- Recents resumes visited apps, retaining their state in the current document. Dismiss and Clear remove shortcuts only.
+- The status button or downward drag on the status region opens quick settings. Its notifications are portfolio shortcuts, not messages from other services.
+- Settings previews/applies wallpapers, chooses a compatible accent, changes icon shape, respects system appearance and reduced motion, and optionally enables gentle wallpaper drift.
+- The side power button or quick settings opens an optional visual lock screen. It starts unlocked; Unlock or Escape resumes the portfolio.
+- Resume cards preview the actual PDFs and retain direct original downloads and new-tab fallback links.
 
-Primary screen URLs: `/#home`, `/#work`, `/#expertise`, `/#experience`, `/#about`, `/#architecture`, `/#resumes`, `/#contact`, `/#recruiter`.
+## Architecture and content
 
-Skill deep links include `/#skill-data`, `/#skill-hardware`, and `/#skill-cross-platform`. Existing `#projects`, `#skills`, and `#credentials` anchors are retained. Each `/work/<slug>.html` is a complete static, canonical case-study page and opens that project immediately. Internal links update the browser URL without reloading; Ctrl/Cmd-click and open-in-new-tab retain native behavior. Browser Back/Forward and the in-device Back button restore meaningful destinations and scroll positions.
+Semantic static HTML, strict TypeScript, CSS container queries, native dialogs, Web Animations, esbuild, and an optional lazy Three.js module. No React/Next migration or new production dependency was introduced. All professional screens remain in generated HTML; without JavaScript, the site becomes a readable document with working links and downloads.
 
-Content is present in generated HTML. Without JavaScript, the portfolio becomes a readable document with navigation, native disclosures, diagrams, links, and downloads. The immersive interface shows one screen at a time after enhancement. Recruiter view presents a compact document and provides print styling.
+Primary routes: `/#home`, `/#about`, `/#work`, `/#expertise`, `/#experience`, `/#architecture`, `/#resumes`, `/#contact`, `/#settings`, `/#recruiter`. Legacy anchors and `/#skill-*` destinations remain. Four canonical `/work/<slug>.html` pages are independently accessible. Modified-click/open-in-new-tab retains native browser behavior.
 
-Desktop scrolls the content pane inside a stable device. Mobile uses natural document scrolling and fixed bottom navigation. Container queries genuinely rearrange the interface for desktop smartphone/tablet previews. No custom swipe interception, audio, forced lock screen, fake notifications, or forms are included. The clock uses browser-local time; network and battery symbols are explicitly illustrative.
+The factual profile and projects remain in `src/content.mjs`, with skill evidence in `src/data/skills.mjs`. Build-time components are in `scripts/components/`; runtime OS interactions in `src/os/controller.ts`; personalization in `src/device/settings.ts`; routing in `src/main.ts` and `src/navigation.ts`; visual styles in `src/styles/`.
 
-Preferences are stored locally when storage is available. OS reduced motion is always respected. Native dialogs support Escape, focus containment, and focus return. The CSS shell stays stable during interaction. Three.js is loaded only in Architecture on suitable devices; rendering is event-driven, pixel ratio is capped, and a static SVG remains usable without WebGL.
+See [OS 3 implementation notes](docs/RUZAIN-OS-3.md), [validation](docs/VALIDATION.md), and [original resume reconciliation](docs/AUDIT.md). `docs/PORTFOLIO-OS.md` records the previous OS 2 design and is historical.
 
-## Deploy through existing GitHub Pages
+## Deploy with existing GitHub Pages
 
-1. Run `npm ci`, `npm run check`, and `npm run test:browser` with supported Node and Chrome.
-2. Review and commit source, generated HTML/CSS/JS, assets, lockfile, and resumes.
-3. Push to the branch already selected in GitHub Pages, keeping its root-folder publishing configuration.
-4. Keep `CNAME` as `ruzain.online`. `_config.yml` retains the existing Jekyll theme and excludes development/test sources. Generated HTML has no Jekyll front matter and uses the custom design directly.
-5. Verify all main screens, browser Back/Forward, four `/work/*.html` routes, three PDF downloads, sitemap, and 404 on the deployed domain.
+1. Run the checks above with supported Node and Chrome.
+2. Review and commit source, generated pages/assets, configuration and tests together.
+3. Push to the branch already configured in GitHub Pages, preserving root-folder publishing.
+4. Keep `CNAME` as `ruzain.online`; `_config.yml` excludes development files and preserves the existing configuration.
+5. Verify launcher, app routes, browser Back/Forward, canonical project pages, all three PDF downloads, sitemap and 404 on the deployed domain.
 
-No hosting destination, DNS, or production publication was changed by this task. Root-relative URLs target the existing custom-domain/user-site deployment; a future repository-subpath deployment requires a base-path option.
+The task does not change hosting, DNS, or production publication. Root-relative links target the existing custom domain/user-site deployment; a repository-subpath deployment would need a base-path option.
 
-## Content and maintenance
+## Maintenance
 
-Original regional PDFs remain under `resumes/`, unchanged. The old root PDF remains for existing external links. The historical employer title is Android Developer, with dates Jan 2023–Oct 2026. Do not increment tenure after that end date. Update availability when it changes. Role-wide metrics must not become individual project metrics.
-
-Only resume-supported skills and projects are displayed. KMP is scoped to early shared-code initiatives; CameraX, QR scanning, ML Kit, and kiosk claims remain excluded. Case-study diagrams show conceptual responsibilities, not confidential implementation blueprints. Certifications have no invented verification links.
-
-See `docs/AUDIT.md` for the original resume reconciliation, `docs/PORTFOLIO-OS.md` for this evolution's decisions, and `docs/VALIDATION.md` for measured results and remaining limits. The earlier uncommitted original page backup remains outside the public repository at `D:\portfolio\portfolio-backups\index.before-redesign-2026-11-15.html`.
+Preserve original regional PDFs under `resumes/` and the old root resume for existing links. Career dates are Jan 2023–Oct 2026; do not increment the completed tenure. Keep availability and relocation preferences current. Role-wide outcomes must not become per-project metrics. KMP remains early shared-code work; unsupported CameraX/ML Kit/QR/kiosk claims remain excluded. Conceptual artwork is not a production screenshot. Website technologies are not new career claims.

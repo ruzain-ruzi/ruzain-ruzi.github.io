@@ -2,6 +2,7 @@ import { resolveRoute, type PortfolioRoute } from './navigation';
 import { initializeSettings } from './device/settings';
 import { initializeExplorers } from './features/explorers';
 import { initializeCore } from './device/core-loader';
+import { initializeOS } from './os/controller';
 
 interface RouteState { portfolio: true; index: number; key: string; scroll: number }
 const viewport=document.querySelector<HTMLElement>('.device-viewport');
@@ -22,7 +23,7 @@ function initializePortfolio(viewport:HTMLElement):void {
   const scrollPositions=new Map<string,number>();
   const screenPositions=new Map<string,number>();
   const readScroll=():number=>mobile.matches?window.scrollY:viewport.scrollTop;
-  const writeScroll=(top:number):void=>{if(mobile.matches)window.scrollTo({top,behavior:'instant'});else viewport.scrollTo({top,behavior:'instant'});};
+  const writeScroll=(top:number):void=>{if(mobile.matches)window.scrollTo({top,behavior:'instant'});else {window.scrollTo({top:0,behavior:'instant'});viewport.scrollTo({top,behavior:'instant'});}};
   function saveScroll():void { scrollPositions.set(currentKey,readScroll());screenPositions.set(current.screen,readScroll()); }
   viewport.addEventListener('scroll',saveScroll,{passive:true});
   window.addEventListener('scroll',saveScroll,{passive:true});
@@ -33,6 +34,7 @@ function initializePortfolio(viewport:HTMLElement):void {
   function render(route:PortfolioRoute,focus:boolean,scroll:number):void {
     const active=screens.find(screen=>screen.dataset.screen===route.screen);
     if(!active)return;
+    if(focus)os.before(screens.find(screen=>!screen.hidden),route.screen);
     document.querySelectorAll<HTMLDialogElement>('dialog[open]').forEach(dialog=>dialog.close());
     screens.forEach(screen=>{screen.hidden=screen!==active;});
     document.body.classList.toggle('recruiter-mode',route.screen==='recruiter');
@@ -55,8 +57,8 @@ function initializePortfolio(viewport:HTMLElement):void {
     if(focus){
       const heading=active.querySelector<HTMLElement>('h2');heading?.focus({preventScroll:true});
       const announcement=document.getElementById('route-announcement');if(announcement)announcement.textContent=`${label} screen`;
-      if(!preferences.motionReduced())active.animate([{opacity:.4,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:190,easing:'cubic-bezier(.2,0,0,1)'});
     }
+    os.after(active,focus);
   }
   function navigate(route:PortfolioRoute):void {
     saveScroll();
@@ -94,9 +96,11 @@ function initializePortfolio(viewport:HTMLElement):void {
   }
   window.addEventListener('popstate',restore);
   window.addEventListener('hashchange',restore);
-  document.getElementById('app-back')?.addEventListener('click',()=>{
+  function goBack():void {
     if(routeIndex>0)history.back();else navigate({screen:current.screen.startsWith('project-')?'work':'home',url:current.screen.startsWith('project-')?'/#work':'/#home'});
-  });
+  }
+  document.getElementById('app-back')?.addEventListener('click',goBack);
+  const os=initializeOS({navigate,back:goBack,current:()=>current,reduced:preferences.motionReduced});
   window.addEventListener('pagehide',()=>{
     saveScroll();history.replaceState({portfolio:true,index:routeIndex,key:currentKey,scroll:readScroll()} satisfies RouteState,'',location.href);
   });

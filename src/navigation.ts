@@ -1,5 +1,5 @@
 export interface PortfolioRoute { screen: string; category?: string; url: string }
-export const screenNames = ['home','about','expertise','experience','work','architecture','resumes','contact','recruiter','not-found'] as const;
+export const screenNames = ['home','about','expertise','experience','work','architecture','resumes','contact','recruiter','settings','not-found'] as const;
 export const projectSlugs = ['onedi-transit','onedi-smart-pos','onedi-media','chandini-dsr'] as const;
 /** A small allowlisted router shared by DOM navigation and route tests. */
 export function resolveRoute(url: URL): PortfolioRoute | null {

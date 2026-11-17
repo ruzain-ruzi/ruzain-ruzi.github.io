@@ -1,5 +1,9 @@
 export const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const paths = {
+  search: '<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/>',
+  grid: '<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
+  signal: '<path d="M4 20v-3m5 3v-7m5 7V9m5 11V4"/>',
+  recents: '<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M3 6v12M21 6v12"/>',
   home: '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
   work: '<rect x="3" y="6" width="18" height="15" rx="3"/><path d="M8 6V3h8v3M3 12h18M10 12v3h4v-3"/>',
   skills: '<path d="m8 5-6 7 6 7m8-14 6 7-6 7m-2-16-4 20"/>',

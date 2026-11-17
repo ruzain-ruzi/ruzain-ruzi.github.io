@@ -1,5 +1,7 @@
 # Portfolio 2.0 — Android device experience
 
+Historical design record. See [Ruzain OS 3.0](RUZAIN-OS-3.md) for the current implementation.
+
 ## Audit and reuse
 
 The starting checkout was clean at `0a1cd60`. It already contained static generated pages, strict TypeScript interactions, Four resume-backed case studies, an optional Three.js core, project illustrations, regional PDFs, a local preview server, and automated static checks. The original PDF reconciliation in `AUDIT.md` remains authoritative; all three current resume hashes still match the source files. No new professional claims were inferred from the device concept.
