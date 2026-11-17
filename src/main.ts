@@ -47,7 +47,9 @@ function initializePortfolio(viewport:HTMLElement):void {
     if(moreButton)moreButton.classList.toggle('active',['experience','about','architecture','contact','recruiter'].includes(section));
     const label=active.dataset.title??'Portfolio';
     const labelElement=document.getElementById('screen-label');if(labelElement)labelElement.textContent=label;
-    const backButton=document.querySelector<HTMLButtonElement>('#app-back');if(backButton)backButton.disabled=route.screen==='home' && routeIndex===0;
+    document.querySelectorAll<HTMLButtonElement>('#app-back,#os-back').forEach(button=>{
+      button.disabled=route.screen==='home';
+    });
     document.title=route.screen==='home'?'Ruzain Abdurahman | Android & Mobile Software Engineer':`${label} | Ruzain Abdurahman`;
     const canonical=route.screen.startsWith('project-')?`/work/${route.screen.slice(8)}.html`:'/';
     document.querySelector('link[rel="canonical"]')?.setAttribute('href','https://ruzain.online'+canonical);
@@ -97,6 +99,9 @@ function initializePortfolio(viewport:HTMLElement):void {
   window.addEventListener('popstate',restore);
   window.addEventListener('hashchange',restore);
   function goBack():void {
+    // The launcher is the root of in-device navigation, even when the browser
+    // still has previous entries. Native browser history remains independent.
+    if(current.screen==='home')return;
     if(routeIndex>0)history.back();else navigate({screen:current.screen.startsWith('project-')?'work':'home',url:current.screen.startsWith('project-')?'/#work':'/#home'});
   }
   document.getElementById('app-back')?.addEventListener('click',goBack);

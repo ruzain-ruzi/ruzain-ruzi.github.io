@@ -177,6 +177,7 @@ test('axe audits each screen, project detail, settings, and light mode',async({p
   const settings=await page.evaluate(async()=> (await window.axe.run()).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})));
   results.push({route:'light-settings',violations:settings});
   await page.locator('#open-settings').click();
+  await page.evaluate(()=>Promise.all(document.getAnimations().filter(a=>a.effect?.getTiming().iterations!==Infinity).map(a=>a.finished.catch(()=>{}))));
   const light=await page.evaluate(async()=> (await window.axe.run()).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})));
   results.push({route:'light-detail',violations:light});
   await test.info().attach('accessibility-results',{body:JSON.stringify(results,null,2),contentType:'application/json'});

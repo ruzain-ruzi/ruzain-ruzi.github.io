@@ -312,3 +312,23 @@ body.recruiter-mode .app-shell { overflow:visible; }
 /* Reserve the canonical screen before the module loads. The timeout removes
    app-loading if the bundle fails, revealing the complete readable document. */
 .app-loading [data-screen]:not(:first-child) { display:none; }
+
+/* Preserve the supplied cutout's natural color and facial detail. Only the
+   shirt's lower edge fades; text occupies a protected area beside the face. */
+.profile-widget { position:relative; overflow:hidden; isolation:isolate; }
+.profile-portrait { position:absolute; right:-3%; bottom:-8%; height:110%; width:auto; max-width:none; object-fit:contain; object-position:right bottom; z-index:-2; mask-image:linear-gradient(to bottom,#000 0%,#000 76%,transparent 92%); }
+.profile-widget::after { content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg,var(--surface) 12%,color-mix(in srgb,var(--surface) 96%,transparent) 40%,transparent 64%); }
+.profile-widget .widget-top { justify-content:flex-start; }
+.profile-copy { max-width:66%; }
+.profile-widget h3 br { display:initial; }
+.profile-widget h3 { max-width:none; text-shadow:0 1px 8px var(--surface); }
+.profile-widget p,.profile-widget .widget-bottom { color:var(--text); text-shadow:0 1px 6px var(--surface); }
+.profile-widget .widget-bottom>.icon { padding:3px; box-sizing:content-box; border-radius:50%; background:var(--surface); }
+#os-back:disabled { opacity:.2; cursor:default; }
+@container device (max-width:500px) {
+  .profile-portrait { width:auto; right:-13%; height:100%; bottom:-3%; }
+  .profile-widget::after { background:linear-gradient(90deg,var(--surface) 14%,color-mix(in srgb,var(--surface) 96%,transparent) 43%,transparent 72%); }
+  .profile-copy { max-width:68%; }
+  .profile-widget h3 { font-size:17px; letter-spacing:-.04em; }
+  .profile-widget p { max-width:90px; line-height:1.35; }
+}

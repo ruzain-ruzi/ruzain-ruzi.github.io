@@ -1,5 +1,15 @@
 # Ruzain OS 3.0 — validation, 17 November 2026
 
+## Follow-up — 18 November 2026
+
+Latest portrait replacement: the user's transparent `myPhoto.png` replaces the previous portrait without modifying its pixels. Removed the silhouette mask, grayscale filter and reduced image opacity. Facial detail stays fully visible in natural color, with a CSS fade confined to the lower shirt and a separate text-protection gradient. Mobile text sizing/width keeps the copy beside the face. Both themes at 390px and 1440px passed launcher accessibility audits with zero violations or overflow; build and static checks passed. The earlier silhouette treatment described below is superseded.
+
+Portrait polish: feathered the silhouette and faded the lower edge into the card. Strengthened the theme-aware gradient behind the name, role and experience. Visually inspected card captures at 390px and 1440px in both themes; the four launcher accessibility audits reported zero violations and no document overflow. Production build and all three static checks passed.
+
+The in-device Back controls are now disabled on Home and the Back handler treats the launcher as its root, including after refresh. Native browser history remains available. A regression test covers app → Home → Back/Escape, reload, and subsequent app navigation. The supplied portrait is displayed in the launcher profile card using CSS monochrome styling and an SVG silhouette mask; the source photo is unchanged.
+
+TypeScript, lint, build and the three static checks passed. The browser run passed 24 of 25 checks; the remaining audit sampled a dialog during its opening fade. The audit now waits for finite animations to settle, and it and the new navigation regression passed on retest. Responsive and palette accessibility checks passed. The performance measurements and resource sizes below predate the portrait addition and are historical, not measurements of this follow-up.
+
 ## Results
 
 - TypeScript, ESLint, production build and all three static tests passed.

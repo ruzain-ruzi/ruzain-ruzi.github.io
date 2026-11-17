@@ -4,6 +4,19 @@ async function start(p,route='/'){await p.goto(route);await expect(p.locator('ht
 async function launch(p,id){await p.locator(`#home .launcher-grid [data-launch="${id}"]`).click();await expect(active(p)).toHaveAttribute('id',id);}
 async function home(p){await p.locator('#os-home').click();await expect(active(p)).toHaveAttribute('id','home');}
 
+test('Home is the root of in-device Back navigation',async({page})=>{
+ await start(page);await expect(page.locator('#os-back')).toBeDisabled();
+ await launch(page,'work');await expect(page.locator('#os-back')).toBeEnabled();
+ await home(page);await expect(page.locator('#os-back')).toBeDisabled();
+ await page.locator('#os-back').evaluate(button=>button.click());
+ await page.keyboard.press('Escape');await expect(active(page)).toHaveAttribute('id','home');
+ await page.reload();await expect(page.locator('#os-back')).toBeDisabled();
+ await launch(page,'contact');await page.locator('#os-back').click();
+ await expect(active(page)).toHaveAttribute('id','home');await expect(page.locator('#os-back')).toBeDisabled();
+ const portrait=page.locator('.profile-portrait');await expect(portrait).toBeVisible();
+ await expect.poll(()=>portrait.evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
+});
+
 test('launcher icons open apps, home returns focus, transitions survive rapid navigation',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));await start(page);
  for(const id of ['about','work','expertise','experience','architecture','resumes','contact','settings']){
