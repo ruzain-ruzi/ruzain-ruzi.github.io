@@ -147,10 +147,10 @@ svg {
 .js-only {
   display:none!important
 }
-.enhanced .js-only {
+:is(.enhanced,.app-loading) .js-only {
   display:inline-flex!important
 }
-.enhanced .no-js-only {
+:is(.enhanced,.app-loading) .no-js-only {
   display:none!important
 }
 [hidden] {
@@ -401,7 +401,7 @@ svg {
   border:1px solid #050a07;
   box-shadow:0 0 0 1px #101813
 }
-.enhanced .device-display {
+:is(.enhanced,.app-loading) .device-display {
   height:clamp(540px,calc(100dvh - 260px),850px);
   display:flex;
   flex-direction:column
@@ -555,7 +555,7 @@ svg {
 .navigation-rail .rail-recruiter {
   margin-top:auto
 }
-.enhanced .navigation-rail {
+:is(.enhanced,.app-loading) .navigation-rail {
   overflow-y:auto;
   scrollbar-width:thin
 }
@@ -566,7 +566,7 @@ svg {
   scrollbar-width:thin;
   scrollbar-color:var(--line) transparent
 }
-.enhanced .device-viewport {
+:is(.enhanced,.app-loading) .device-viewport {
   overflow-y:auto;
   overflow-x:hidden
 }
@@ -1066,7 +1066,7 @@ svg {
 .skill-panel summary::-webkit-details-marker {
   display:none
 }
-.enhanced .skill-panel summary {
+:is(.enhanced,.app-loading) .skill-panel summary {
   display:none
 }
 .skill-content {
@@ -2188,10 +2188,10 @@ body[data-layout=phone] .camera {
   .navigation-rail {
     display:none
   }
-  .enhanced .app-screen {
+  :is(.enhanced,.app-loading) .app-screen {
     padding:24px 20px 30px
   }
-  .enhanced .bottom-navigation {
+  :is(.enhanced,.app-loading) .bottom-navigation {
     display:flex;
     flex-shrink:0;
     justify-content:space-around;
@@ -2624,7 +2624,7 @@ body[data-layout=phone] .camera {
   .stage-caption {
     margin-bottom:24px
   }
-  .enhanced .device-display {
+  :is(.enhanced,.app-loading) .device-display {
     height:clamp(650px,calc(100dvh - 275px),930px)
   }
 }
@@ -2647,7 +2647,7 @@ body[data-layout=phone] .camera {
   .stage-caption {
     margin-bottom:18px
   }
-  .enhanced .device-display {
+  :is(.enhanced,.app-loading) .device-display {
     height:clamp(530px,calc(100dvh - 190px),880px)
   }
   .outer-footer {
@@ -2719,11 +2719,11 @@ body[data-layout=phone] .camera {
   .navigation-rail {
     display:none
   }
-  .device-viewport,.enhanced .device-viewport {
+  .device-viewport,:is(.enhanced,.app-loading) .device-viewport {
     overflow:visible;
     min-height:calc(100dvh - 160px)
   }
-  .enhanced .bottom-navigation {
+  :is(.enhanced,.app-loading) .bottom-navigation {
     position:fixed;
     bottom:0;
     left:0;
@@ -2738,7 +2738,7 @@ body[data-layout=phone] .camera {
     border-top:1px solid var(--line);
     box-shadow:0 -10px 20px color-mix(in srgb,var(--screen),transparent 60%)
   }
-  .enhanced .app-screen {
+  :is(.enhanced,.app-loading) .app-screen {
     padding:25px 20px calc(100px + env(safe-area-inset-bottom,0px))
   }
   .gesture-area {
@@ -2804,7 +2804,7 @@ body[data-layout=phone] .camera {
   }
 }
 @media(max-width:360px) {
-  .enhanced .app-screen {
+  :is(.enhanced,.app-loading) .app-screen {
     padding-inline:15px
   }
   .hero-card {
@@ -2971,10 +2971,10 @@ body[data-layout=phone] .camera {
 .hero-stack {
   font-size:9px
 }
-:root:not(.enhanced) .app-shell {
+:root:not(.enhanced):not(.app-loading) .app-shell {
   display:block
 }
-:root:not(.enhanced) .navigation-rail {
+:root:not(.enhanced):not(.app-loading) .navigation-rail {
   display:flex;
   flex-direction:row;
   flex-wrap:wrap;
@@ -2982,10 +2982,10 @@ body[data-layout=phone] .camera {
   border-right:0;
   border-bottom:1px solid var(--line)
 }
-:root:not(.enhanced) .navigation-rail a {
+:root:not(.enhanced):not(.app-loading) .navigation-rail a {
   min-width:70px;
   flex:1
 }
-:root:not(.enhanced) .navigation-rail .rail-recruiter {
+:root:not(.enhanced):not(.app-loading) .navigation-rail .rail-recruiter {
   margin:0
 }

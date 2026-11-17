@@ -101,6 +101,7 @@ function initializePortfolio(viewport:HTMLElement):void {
     saveScroll();history.replaceState({portfolio:true,index:routeIndex,key:currentKey,scroll:readScroll()} satisfies RouteState,'',location.href);
   });
   document.documentElement.classList.add('enhanced');
+  document.documentElement.classList.remove('app-loading');
   render(current,false,previousState?.scroll??0);
   // A direct #skill-* URL can trigger the browser's initial fragment scroll
   // after modules run. Restore the screen position once layout/load settles.

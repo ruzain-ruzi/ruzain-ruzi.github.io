@@ -109,6 +109,15 @@ test('no-JavaScript fallback keeps meaningful content and downloads accessible',
   expect(await page.locator('a[download]').count()).toBe(6);
   await context.close();
 });
+test('failed application bundle restores the readable fallback',async({page})=>{
+  await page.route('**/assets/main.js',route=>route.abort());
+  await page.goto('/');
+  await expect(page.locator('html')).not.toHaveClass(/app-loading/,{timeout:6000});
+  await expect(page.locator('#experience')).toBeVisible();
+  await expect(page.locator('#resumes')).toBeVisible();
+  await expect(page.locator('.navigation-rail')).toBeVisible();
+  expect(await page.locator('a[download]').count()).toBe(6);
+});
 test('unavailable WebGL never blocks architecture content',async({browser})=>{
   const context=await browser.newContext({viewport:{width:1440,height:1000}});
   await context.addInitScript(()=>{

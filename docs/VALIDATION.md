@@ -2,45 +2,74 @@
 
 ## Completed
 
-- `npm run check`: passed strict TypeScript checking, ESLint, production generation/bundling, and all three Node test suites.
-- Tests resolve every local link, fragment, stylesheet, script, and image across six generated pages; check unique IDs, one h1 per page, JSON-LD parsing, canonical/description metadata, sitemap coverage, career dates, and distinct valid regional PDFs.
-- `npm audit`: **0 vulnerabilities**, including development dependencies, after a scoped minimatch override and clean dependency resolution.
-- `git diff --check`: passed (Git emits only normal Windows line-ending conversion notices).
-- HTTP checks: home, all four case studies, all three PDFs, sitemap and robots returned 200. A missing path returned the custom 404 response.
-- All three regional PDF SHA-256 hashes match their original files exactly.
-- Browser: desktop WebGL canvas rendered successfully with no captured console warnings/errors in the checked preview. Static fallback rendered on mobile. Desktop and small-phone screenshots were inspected; ticket and TV illustrations were corrected after mobile review.
-- Responsive checks: home inspected at 320, 390, 768, 1440, and 2560 CSS px. No horizontal document overflow at the checked widths. Transit case study also checked at 320, 768, and 1920px. Browser viewport overrides were used; this is not physical-device testing.
-- Interaction checks: mobile Menu opens; Escape closes it; section navigation closes the menu and transfers focus to the selected section. Architecture layer selection updates text; Enter activates a layer with visible focus. Mobile project links navigate to dedicated case studies.
-- Axe-core 4.14.0: **zero automated violations** on the home page and all four case studies for WCAG A/AA tags through 2.2 plus best-practice rules. Home recorded 41 passing rules; each case study recorded 32. Some contrast checks on transformed/layered/decorative artwork were incomplete and require human review. This is not a WCAG conformance certification.
+- `npm run check`: strict TypeScript, ESLint, production build, and all three static tests passed after the final startup-layout fix.
+- Browser regression suite: 15 tests passed after that fix; the newly added blocked-script fallback test also passed separately (16 tests total). Chrome with Playwright was used.
+- Functional coverage: application navigation, browser Back/Forward, direct skill links, canonical project reloads, scroll restoration, project filters, keyboard architecture selection, mobile touch navigation, Escape/focus return, theme persistence, form-factor reflow, reduced motion, recruiter printing, and all three real PDF downloads.
+- Fallback coverage: JavaScript disabled, application bundle blocked, and WebGL unavailable. A small early layout marker prevents the unenhanced document from flashing before initialization; it expires after four seconds if the application bundle fails, restoring the complete readable document.
+- Responsive checks: eight screens at 320, 390, 768, 1024, 1440, and 2560 CSS px; no horizontal document overflow. Desktop, mobile, tablet, project, skills, resume, contact, and architecture screenshots inspected. Desktop architecture successfully rendered WebGL; mobile retained the static alternative.
+- Axe-core 4.14.0: zero automated violations across nine screens, a project detail, settings, and light mode for the configured WCAG A/AA and best-practice rules. This does not certify WCAG conformance or replace screen-reader and human review.
+- Static tests resolve local links, fragments, assets, and metadata across six generated pages, check unique IDs and one h1 per page, parse JSON-LD, check sitemap coverage/career facts, and validate distinct regional PDFs.
+- Regional download responses are valid PDFs and byte-identical to repository originals. Their SHA-256 hashes match the supplied resume files.
+- `npm audit`: zero vulnerabilities including development dependencies. `git diff --check`: passed; only ordinary Windows line-ending notices.
 
-## Size measurements
+## Lighthouse lab measurements
 
-Measured with Node zlib gzip on final local files; these are compressed file estimates, not actual GitHub Pages transfer measurements.
+Final local homepage runs used Lighthouse 13.6.0 with headless installed Chrome. Mobile uses Lighthouse's default simulated mobile throttling; desktop uses its desktop preset. Runs were sequential, after browser tests finished.
+
+| Measurement | Mobile | Desktop |
+| --- | ---: | ---: |
+| Performance | 100 | 100 |
+| Accessibility | 100 | 100 |
+| Best practices | 100 | 100 |
+| SEO | 100 | 100 |
+| First contentful paint | 1.5 s | 0.4 s |
+| Largest contentful paint | 1.5 s | 0.4 s |
+| Total blocking time | 0 ms | 0 ms |
+| Cumulative layout shift | 0 | 0 |
+| Speed index | 1.5 s | 0.5 s |
+
+An earlier desktop run exposed a startup shift between fallback and enhanced layouts; the early layout marker fixed it. These are localhost lab results, not deployed-network, field INP, physical-device, or production Core Web Vitals guarantees.
+
+Reports are in ignored `.qa/lighthouse-{mobile,desktop}.report.html` and `.json`. Browser artifacts and screenshots are also in `.qa/`; recruiter print output is `.qa/recruiter-print.pdf`.
+
+## Final resource sizes
+
+Node zlib gzip estimates, not actual GitHub Pages transfers:
 
 | Resource | Raw bytes | Gzip bytes |
 | --- | ---: | ---: |
-| Home HTML | 21,576 | 6,580 |
-| Shared CSS | 36,969 | 7,628 |
-| Initial JavaScript | 3,794 | 1,839 |
-| Optional Three.js/core chunk | 554,710 | 139,765 |
+| Home HTML (all static screen content) | 104,971 | 14,843 |
+| Shared CSS | 48,045 | 10,348 |
+| Initial JavaScript | 9,436 | 3,466 |
+| Optional Three.js/core chunk | 554,936 | 139,784 |
 
-The static SVG core does not require Three.js. System fonts avoid third-party font downloads. The optional WebGL module uses no external textures/models and is skipped for reduced-motion, small/coarse-pointer, save-data, low-memory, and low-core-count devices. Geometry renders on demand; rendering work checks intersection and document visibility. These lifecycle paths were reviewed in source, but reduced-motion changes, context loss, and each hardware constraint were not independently emulated in-browser.
+System fonts avoid remote font requests. The CSS device shell and static architecture diagram do not require Three.js. Its optional chunk loads only in Architecture on suitable devices; reduced motion, small/coarse pointers, save-data and low hardware hints prevent loading. Geometry renders on demand with visibility checks. Every hardware-hint combination and WebGL context loss was not separately tested.
 
-## Reproduce browser accessibility checks
+## Reproduce
 
-Run `node scripts/serve.mjs --audit` after `npm ci` and `npm run build`, then open:
+Use Node 22.19+ (24 recommended), npm, and installed Google Chrome:
 
-- `http://127.0.0.1:4173/__audit`
-- `http://127.0.0.1:4173/__audit?page=work/onedi-transit.html`
+```sh
+npm ci
+npm run check
+npm run test:browser
+npm run preview
+```
 
-The local-only harness adds axe to the requested page and appends JSON results in `#accessibility-audit`. It is not injected into production HTML. The development server and scripts are excluded from Pages publishing. Local review images and machine-readable audits are in ignored `.qa/`.
+With preview running, in a separate terminal:
 
-## Not measured / follow-up
+```sh
+npx lighthouse http://127.0.0.1:4173/ --chrome-flags=--headless --output=json --output=html --output-path=.qa/lighthouse-mobile --only-categories=performance,accessibility,best-practices,seo
+npx lighthouse http://127.0.0.1:4173/ --preset=desktop --chrome-flags=--headless --output=json --output=html --output-path=.qa/lighthouse-desktop --only-categories=performance,accessibility,best-practices,seo
+```
 
-- Lighthouse, LCP, CLS, INP, real-network transfer sizes, and deployed Core Web Vitals were not measured. No target scores or field performance results are claimed.
-- Safari, Firefox, screen-reader speech output, actual low-end GPUs, physical phones, and browser-emulated reduced-motion changes were not tested. Test these before claiming complete cross-browser or WCAG coverage.
-- Confirm credentials with issuer URLs when available; none were supplied. Maintain current availability and relocation preferences as circumstances change.
-- No Git push or production deployment was performed. Run the post-deploy checks in README after publishing through the existing GitHub Pages configuration.
+Set `CHROME_PATH` if automatic Chrome discovery fails. The optional local `node scripts/serve.mjs --audit` harness remains available at `/__audit`; it is excluded from deployment.
+
+## Limits and deployment
+
+Safari, Firefox, actual screen-reader speech, physical phones, real mid-range GPUs, field INP, and deployed performance were not tested. Touch and reduced motion were browser-emulated. Keep availability and relocation preferences current; credential issuer URLs were not supplied.
+
+No Git commit, push, DNS change, or production deployment was performed. The generated files remain ready for the existing GitHub Pages configuration and `ruzain.online` CNAME. Follow README deployment checks after publishing.
 
 ## Preserved resume hashes
 
