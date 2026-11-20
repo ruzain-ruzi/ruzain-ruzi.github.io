@@ -116,9 +116,9 @@ body:not([data-active-app=home]) .device-top { background:var(--screen); }
 .contact-widget strong { display:block; font-size:12px; margin-top:4px; }
 .contact-widget>.icon:last-child { margin-left:auto; }
 .launcher-bottom { display:flex; align-items:center; justify-content:space-between; gap:30px; margin-top:24px; }
-.launcher-search { display:flex; align-items:center; gap:12px; text-align:left; border:1px solid #ffffff60; background:var(--surface); color:var(--muted); border-radius:30px; padding:17px 20px; width:42%; cursor:pointer; font-size:12px; }
+.launcher-search { display:flex; align-items:center; gap:12px; text-align:left; border:1px solid #ffffff60; background:var(--surface); color:var(--muted); border-radius:30px; padding:17px 20px; width:100%; cursor:pointer; font-size:12px; }
 .launcher-search kbd { margin-left:auto; font-size:12px; }
-.launcher-dock { display:flex; justify-content:space-evenly; gap:25px; background:#ffffff55; padding:10px 24px; border:1px solid #ffffff50; border-radius:27px; }
+.launcher-dock { display:none; justify-content:space-evenly; gap:25px; background:#ffffff55; padding:10px 24px; border:1px solid #ffffff50; border-radius:27px; }
 .dock-app .launcher-icon { width:45px; height:45px; border-radius:16px; }
 .dock-app .launcher-icon .icon { width:23px; height:23px; }
 .dock-app>span:last-child { font-size:9px; }
